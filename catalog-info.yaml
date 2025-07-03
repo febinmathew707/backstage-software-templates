@@ -55,7 +55,7 @@ spec:
       action: publish:github
       input:
         description: Python Flask Demo Application - ${{ parameters.component_id }}
-        repoUrl: github.com?owner=qburst-praven&repo=${{ parameters.component_id }}
+        repoUrl: github.com?owner=febinmathew707&repo=${{ parameters.component_id }}
         protectDefaultBranch: false
         repoVisibility: public
 
