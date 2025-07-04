@@ -30,19 +30,19 @@ export USER="YourName"
 python app.py
 ```
 
-The application will start on `http://localhost:8080`
+The application will start on `http://localhost:8082`
 
 ## Testing the API
 
 ```bash
 # Get application details
-curl http://localhost:8080/api/details
+curl http://localhost:8082/api/details
 
 # Health check
-curl http://localhost:8080/health
+curl http://localhost:8082/health
 
 # Application info
-curl http://localhost:8080/
+curl http://localhost:8082/
 ```
 
 ## Running with Docker
@@ -55,19 +55,19 @@ docker build -t ${{ values.app_name }} .
 ### Run the container
 ```bash
 # Run with default user and port binding
-docker run -p 8080:8080 ${{ values.app_name }}
+docker run -p 8082:8082 ${{ values.app_name }}
 
 # Run with custom user
-docker run -p 8080:8080 -e USER="CustomUser" ${{ values.app_name }}
+docker run -p 8082:8082 -e USER="CustomUser" ${{ values.app_name }}
 
 # Run with custom port
-docker run -p 3000:8080 -e USER="CustomUser" ${{ values.app_name }}
+docker run -p 3000:8082 -e USER="CustomUser" ${{ values.app_name }}
 ```
 
 ## Environment Variables
 
 - `USER`: The name to display in the greeting (defaults to "${{ values.user_name }}")
-- `PORT`: The port to run the application on (defaults to 8080)
+- `PORT`: The port to run the application on (defaults to 8082)
 
 ## Example API Response
 
@@ -99,4 +99,4 @@ The pipeline automatically triggers on code pushes to the main branch.
 - Base image: `python:3.11-slim`
 - Dependencies: Flask 3.0.0
 - Non-root user for security
-- Exposes port 8080 
+- Exposes port 8082 
