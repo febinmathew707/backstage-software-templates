@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: python-flask-demo-template
   title: Python Flask Demo Application
-  description: Creates a Python Flask application with REST API endpoints, Docker containerization, Kubernetes deployment, and Jenkins CI/CD
+  description: Creates a Python Flask application with REST API endpoints, Docker containerization, and Jenkins CI/CD
 spec:
   owner: development
   type: service

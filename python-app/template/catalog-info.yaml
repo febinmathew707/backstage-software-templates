@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.app_name }}
-  description: API that displays the time
+  description: Python Flask API with Docker deployment and Jenkins CI/CD
   annotations:
     github.com/project-slug: qburst-praven/${{ values.app_name }}
     backstage.io/techdocs-ref: dir:.

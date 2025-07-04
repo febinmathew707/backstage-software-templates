@@ -91,29 +91,42 @@ pipeline {
             }
         }
         
-        stage('Deploy to Kubernetes') {
+        stage('Deploy with Docker') {
             steps {
                 script {
-                    echo "Deploying ${APP_NAME} to Kubernetes cluster"
+                    echo "Deploying ${APP_NAME} with Docker"
                     
-                    // Update deployment manifest with new image tag
+                    // Stop and remove existing container if running
                     sh """
-                        yq eval '.spec.template.spec.containers[0].image = "${IMAGE_NAME}:${env.SHORT_COMMIT}"' -i k8s/deployment.yaml
+                        docker stop ${APP_NAME} || true
+                        docker rm ${APP_NAME} || true
                     """
                     
-                    // Apply Kubernetes manifests (Jenkins runs in-cluster, so no kubeconfig needed)
+                    // Run the new container
                     sh """
-                        # Apply Kubernetes manifests
-                        kubectl apply -f k8s/namespace.yaml
-                        kubectl apply -f k8s/deployment.yaml  
-                        kubectl apply -f k8s/service.yaml
-                        kubectl apply -f k8s/ingress.yaml
+                        docker run -d \\
+                            --name ${APP_NAME} \\
+                            -p 8080:8080 \\
+                            -e USER=\${USER:-BackstageUser} \\
+                            -e PORT=8080 \\
+                            --restart unless-stopped \\
+                            ${IMAGE_NAME}:${env.SHORT_COMMIT}
+                    """
+                    
+                    // Wait for container to be healthy
+                    sh """
+                        echo "Waiting for container to be ready..."
+                        sleep 10
                         
-                        # Wait for deployment to be ready
-                        kubectl rollout status deployment/${APP_NAME} -n ${APP_NAME} --timeout=300s
-                        
-                        # Show deployment status
-                        kubectl get pods -n ${APP_NAME} -l app=${APP_NAME}
+                        # Check if container is running
+                        if docker ps | grep -q ${APP_NAME}; then
+                            echo "✅ Container ${APP_NAME} is running successfully!"
+                            echo "🌐 Application available at: http://localhost:8080"
+                        else
+                            echo "❌ Container failed to start"
+                            docker logs ${APP_NAME}
+                            exit 1
+                        fi
                     """
                 }
             }
@@ -124,9 +137,12 @@ pipeline {
         success {
             echo "Pipeline completed successfully for ${APP_NAME}!"
             echo "Image: ${IMAGE_NAME}:${env.SHORT_COMMIT}"
+            echo "Container: ${APP_NAME}"
+            echo "Application URL: http://localhost:8080"
         }
         failure {
             echo "Pipeline failed for ${APP_NAME}"
+            sh "docker logs ${APP_NAME} || true"
         }
     }
 } 

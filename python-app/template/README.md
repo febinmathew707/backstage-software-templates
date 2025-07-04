@@ -9,6 +9,7 @@ A simple Flask web application for Backstage demo that provides API endpoints wi
 - Personalized greeting using environment variable
 - Health check endpoint
 - Dockerized for easy deployment
+- Jenkins CI/CD pipeline with Docker deployment
 
 ## API Endpoints
 
@@ -81,6 +82,17 @@ docker run -p 3000:8080 -e USER="CustomUser" ${{ values.app_name }}
   "status": "running"
 }
 ```
+
+## CI/CD Pipeline
+
+This application includes a Jenkins CI/CD pipeline that:
+
+1. **Builds** the Docker image with the latest code
+2. **Pushes** the image to GitHub Container Registry
+3. **Deploys** the application using Docker containers
+4. **Monitors** the deployment status
+
+The pipeline automatically triggers on code pushes to the main branch.
 
 ## Docker Image Details
 
