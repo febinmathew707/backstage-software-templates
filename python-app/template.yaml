@@ -35,7 +35,7 @@ spec:
           type: string
           description: Your Jenkins server URL (e.g., http://jenkins.local:8080)
           pattern: '^https?://.*'
-          default: 'http://jenkins.local:8080'
+          default: 'https://jenkins.febinmathew.click'
 
   steps:
     - id: fetch-base
