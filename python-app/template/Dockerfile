@@ -14,10 +14,10 @@ COPY app.py .
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV USER=BackstageUser
-ENV PORT=8080
+ENV PORT=8082
 
 # Expose the application port
-EXPOSE 8080
+EXPOSE 8082
 
 # Create a non-root user for security
 RUN groupadd -r appuser && useradd -r -g appuser appuser
