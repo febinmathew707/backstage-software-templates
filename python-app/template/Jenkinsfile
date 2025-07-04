@@ -110,7 +110,7 @@ pipeline {
                     
                     // Run the new container
                     sh """
-                        docker run -d --name ${APP_NAME} -p 8080:8080 -e USER=\${USER:-BackstageUser} -e PORT=8080 --restart unless-stopped ${IMAGE_NAME}:${env.SHORT_COMMIT}
+                        docker run -d --name ${APP_NAME} -p 8082:8082 -e USER=\${USER:-BackstageUser} -e PORT=8082 --restart unless-stopped ${IMAGE_NAME}:${env.SHORT_COMMIT}
                     """
                     
                     // Wait for container to be healthy
@@ -121,7 +121,7 @@ pipeline {
                         # Check if container is running
                         if docker ps | grep -q ${APP_NAME}; then
                             echo "✅ Container ${APP_NAME} is running successfully!"
-                            echo "🌐 Application available at: http://localhost:8080"
+                            echo "🌐 Application available at: http://localhost:8082"
                         else
                             echo "❌ Container failed to start"
                             docker logs ${APP_NAME}
@@ -173,7 +173,7 @@ pipeline {
             echo "Pipeline completed successfully for ${APP_NAME}!"
             echo "Image: ${IMAGE_NAME}:${env.SHORT_COMMIT}"
             echo "Container: ${APP_NAME}"
-            echo "Application URL: http://localhost:8080"
+            echo "Application URL: http://localhost:8082"
         }
         failure {
             echo "Pipeline failed for ${APP_NAME}"
